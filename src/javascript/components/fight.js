@@ -19,7 +19,7 @@ function createFighterState(fighter, position) {
     indicator: document.getElementById(`${position}-fighter-indicator`),
     health: fighter.health,
     isBlock: false,
-    canCriticallyAttack: false
+    canCriticallyAttack: true
   }
 }
 
@@ -103,9 +103,6 @@ function handleCriticalAttack(firstFighterState, secondFighterState, resolve) {
     tryAttack(secondFighterState, firstFighterState, controls.PlayerTwoCriticalHitCombination);
   }
 
-  resetCriticalAttackTimer(firstFighterState);
-  resetCriticalAttackTimer(secondFighterState);
-
   document.addEventListener('keydown', keyDownHandler);
   document.addEventListener('keyup', event => pressedKeys.delete(event.code));
 
@@ -123,11 +120,8 @@ function attackAction(attackerState, defenderState, calcDamage) {
   return defenderState.health === 0 ? 'win' : 'blocked';
 }
 
-function getCriticalDamage(attacker, defender) {
-  return getDamage({
-    attacker,
-    attack: attacker.attack * 2
-  }, defender);
+function getCriticalDamage(attacker, _) {
+  return attacker.attack * 2
 }
 
 export function getDamage(attacker, defender) {
